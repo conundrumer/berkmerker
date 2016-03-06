@@ -3,16 +3,37 @@ import React, {PropTypes} from 'react'
 
 import styles from './Bookmarks.css!'
 
-export const Bookmark = ({name, url, editing, setEditing, cancelEditing, edit, remove}) => {
+export const BookmarkInput = ({name, url, submitName = 'Submit', onSubmit, children}) => {
   let nameInput, urlInput
-  let onSubmit = () => edit(nameInput.value, urlInput.value)
-  return editing ? (
+  let submit = () => {
+    onSubmit(nameInput.value, urlInput.value)
+    nameInput.value = ''
+    urlInput.value = ''
+  }
+  return (
     <div>
       <input type='text' defaultValue={name} ref={node => nameInput = node} />
       <input className={styles.urlInput} type='url' defaultValue={url} ref={node => urlInput = node} />
-      <button onClick={onSubmit}>Submit</button>
-      <button onClick={cancelEditing}>Cancel</button>
-      <button onClick={remove}>Remove</button>
+      <button onClick={submit}>{submitName}</button>
+      {children}
+    </div>
+  )
+}
+
+BookmarkInput.PropTypes = {
+  name: PropTypes.string,
+  url: PropTypes.string,
+  submitName: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired
+}
+
+export const Bookmark = ({name, url, editing, setEditing, cancelEditing, edit, remove}) => {
+  return editing ? (
+    <div>
+      <BookmarkInput submitName='Submit' name={name} url={url} onSubmit={edit}>
+        <button onClick={cancelEditing}>Cancel</button>
+        <button onClick={remove}>Remove</button>
+      </BookmarkInput>
     </div>
   ) : (
     <div>
@@ -33,17 +54,9 @@ Bookmark.PropTypes = {
 }
 
 export const Bookmarks = ({items, add}) => {
-  let nameInput, urlInput
-  let onSubmit = () => {
-    add(nameInput.value, urlInput.value)
-    nameInput.value = ''
-    urlInput.value = ''
-  }
   return (
     <div>
-      <input type='text' ref={node => nameInput = node} />
-      <input className={styles.urlInput} type='text' ref={node => urlInput = node} />
-      <button onClick={onSubmit}>Add</button>
+      <BookmarkInput submitName='Add' onSubmit={add} />
       {items.map((item, i) =>
         <Bookmark {...item} key={i} />
       )}
