@@ -1,5 +1,5 @@
 /* component */
-import React from 'react'
+import React, {PropTypes} from 'react'
 
 // import styles from './HelloWorld.css!'
 
@@ -20,24 +20,31 @@ export const Bookmark = ({name, editing, setEditing, cancelEditing, edit, remove
   )
 }
 
-export const Bookmarks = ({items, editing, add, setEditing, edit, remove}) => {
+Bookmark.PropTypes = {
+  name: PropTypes.string.isRequired,
+  editing: PropTypes.bool.isRequired,
+  setEditing: PropTypes.func.isRequired,
+  cancelEditing: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired
+}
+
+export const Bookmarks = ({items, add}) => {
   let input
   return (
     <div>
       <input type='text' ref={node => input = node} />
       <button onClick={() => { add(input.value); input.value = '' }}>Add</button>
       {items.map((item, i) =>
-        <Bookmark {...item}
-          key={i}
-          editing={i === editing}
-          setEditing={() => setEditing(i)}
-          cancelEditing={() => setEditing(null)}
-          edit={(...args) => edit(i, ...args)}
-          remove={() => remove(i)}
-        />
+        <Bookmark {...item} key={i} />
       )}
     </div>
   )
+}
+
+Bookmarks.PropTypes = {
+  items: PropTypes.array.isRequired,
+  add: PropTypes.func.isRequired
 }
 
 /* container */
@@ -46,8 +53,20 @@ import { connect } from 'react-redux'
 
 import * as actionCreators from './reduxModule.js'
 
-const mapStateToProps = ({ui: {bookmarks}}, ownProps) => ({...bookmarks})
+const mapStateToProps = ({ui: {bookmarks}}) => ({...bookmarks})
 
-const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators(actionCreators, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Bookmarks)
+const mergeProps = ({items, editing}, {add, setEditing, edit, remove}) => ({
+  add,
+  items: items.map(({name}, i) => ({
+    name,
+    editing: i === editing,
+    setEditing: () => setEditing(i),
+    cancelEditing: () => setEditing(null),
+    edit: (...args) => edit(i, ...args),
+    remove: () => remove(i)
+  }))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(Bookmarks)
