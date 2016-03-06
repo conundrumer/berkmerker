@@ -1,4 +1,4 @@
-MAIN = src/main.jsx
+MAIN = src/main.js
 BUNDLE = bundle.js
 DIST = dist
 FILES = $(DIST)/jspm_packages/system.js $(DIST)/jspm.browser.js $(DIST)/jspm.config.js $(DIST)/index.html

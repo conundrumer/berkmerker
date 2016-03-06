@@ -7,7 +7,7 @@
     <script src="jspm.config.js"></script>
   </head>
   <body>
-    <div id="container"></div>
+    <div id="container">loading...</div>
     <script>
       SystemJS.import('bundle.js').then(function () {
         SystemJS.config({production: true})
@@ -15,7 +15,7 @@
         console.log('Development')
         SystemJS.config({trace: true})
       }).then(function () {
-        SystemJS.import('src/main.jsx')
+        SystemJS.import('src/main.js')
       })
     </script>
   </body>

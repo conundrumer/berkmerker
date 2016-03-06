@@ -25,6 +25,8 @@ SystemJS.config({
     "process": "github:jspm/nodelibs-process@0.2.0-alpha",
     "react": "npm:react@0.14.7",
     "react-dom": "npm:react-dom@0.14.7",
+    "react-redux": "npm:react-redux@4.4.0",
+    "redux": "npm:redux@3.3.1",
     "stream": "github:jspm/nodelibs-stream@0.2.0-alpha",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.5.6",
     "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",
@@ -257,6 +259,14 @@ SystemJS.config({
         "supports-color": "npm:supports-color@3.1.2"
       }
     },
+    "npm:react-redux@4.4.0": {
+      "map": {
+        "hoist-non-react-statics": "npm:hoist-non-react-statics@1.0.5",
+        "invariant": "npm:invariant@2.2.0",
+        "lodash": "npm:lodash@4.6.1",
+        "loose-envify": "npm:loose-envify@1.1.0"
+      }
+    },
     "npm:react@0.14.7": {
       "map": {
         "fbjs": "npm:fbjs@0.6.1"
@@ -270,6 +280,13 @@ SystemJS.config({
         "process-nextick-args": "npm:process-nextick-args@1.0.6",
         "string_decoder": "npm:string_decoder@0.10.31",
         "util-deprecate": "npm:util-deprecate@1.0.2"
+      }
+    },
+    "npm:redux@3.3.1": {
+      "map": {
+        "lodash": "npm:lodash@4.6.1",
+        "lodash-es": "npm:lodash-es@4.6.1",
+        "loose-envify": "npm:loose-envify@1.1.0"
       }
     },
     "npm:repeating@1.1.3": {
