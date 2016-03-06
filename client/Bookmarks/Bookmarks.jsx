@@ -1,70 +1,3 @@
-/* actions */
-const ADD = 'Bookmarks/ADD'
-const SET_EDITING = 'Bookmarks/SET_EDITING'
-const EDIT = 'Bookmarks/EDIT'
-const REMOVE = 'Bookmarks/REMOVE'
-
-const add = (name) => ({
-  type: ADD,
-  payload: {
-    item: {name}
-  }
-})
-const setEditing = (index) => ({
-  type: SET_EDITING,
-  payload: {
-    index
-  }
-})
-const edit = (index, name) => ({
-  type: EDIT,
-  payload: {
-    index,
-    item: {name}
-  }
-})
-const remove = (index) => ({
-  type: REMOVE,
-  payload: {
-    index
-  }
-})
-
-const actions = {add, setEditing, edit, remove}
-
-/* reducer */
-// items: [{name: string}, ...]
-export function reducer (state = {items: [], editing: null}, action) {
-  let items
-  let {type, payload} = action
-  switch (type) {
-    case ADD:
-      return {
-        editing: null,
-        items: [payload.item, ...state.items]
-      }
-    case SET_EDITING:
-      return {
-        ...state,
-        editing: payload.index
-      }
-    case EDIT:
-      items = [...state.items]
-      items[payload.index] = {...payload.item}
-      return {
-        editing: null,
-        items
-      }
-    case REMOVE:
-      return {
-        editing: null,
-        items: state.items.filter((_, i) => payload.index !== i)
-      }
-    default:
-      return state
-  }
-}
-
 /* component */
 import React from 'react'
 
@@ -111,8 +44,10 @@ export const Bookmarks = ({items, editing, add, setEditing, edit, remove}) => {
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import * as actionCreators from './reduxModule.js'
+
 const mapStateToProps = ({ui: {bookmarks}}, ownProps) => ({...bookmarks})
 
-const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators(actions, dispatch)
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators(actionCreators, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Bookmarks)

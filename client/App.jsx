@@ -1,7 +1,7 @@
 import React from 'react'
 
 import HelloWorld from './HelloWorld.jsx'
-import Bookmarks from './Bookmarks.jsx'
+import Bookmarks from './bookmarks/Bookmarks.jsx'
 
 export default () => (
   <div>

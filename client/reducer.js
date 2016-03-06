@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
 import {reducer as helloWorld} from './HelloWorld.jsx'
-import {reducer as bookmarks} from './Bookmarks.jsx'
+import bookmarks from './bookmarks/reduxModule.js'
 
 const reducers = combineReducers({
   ui: combineReducers({helloWorld, bookmarks}),
