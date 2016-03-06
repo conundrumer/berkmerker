@@ -8,13 +8,15 @@ const actions = {inc}
 
 /* reducer */
 export function reducer (state = {text: 'hello', counter: 0}, action) {
-  if (action.type === INC) {
-    return {
-      text: state.text,
-      counter: state.counter + 1
-    }
+  switch (action.type) {
+    case INC:
+      return {
+        ...state,
+        counter: state.counter + 1
+      }
+    default:
+      return state
   }
-  return state
 }
 
 /* component */
@@ -30,10 +32,10 @@ export const HelloWorld = ({text, inc}) => (
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-const mapStateToProps = ({helloWorld: state}, props) => ({
-  text: `${state.text} ${props.text} ${state.counter}`
+const mapStateToProps = ({ui: {helloWorld: state}}, ownProps) => ({
+  text: `${state.text} ${ownProps.text} ${state.counter}`
 })
 
-const mapDispatchToProps = (dispatch, props) => bindActionCreators({inc: actions.inc}, dispatch)
+const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators(actions, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(HelloWorld)
