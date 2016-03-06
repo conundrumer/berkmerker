@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <meta charset="utf-8">
+  <head>
+    <script src="jspm_packages/system.js"></script>
+    <script src="jspm.browser.js"></script>
+    <script src="jspm.config.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      SystemJS.import('bundle.js').then(function () {
+        SystemJS.config({production: true})
+      }).catch(function () {
+        console.log('Development')
+        SystemJS.config({trace: true})
+      }).then(function () {
+        SystemJS.import('src/main.jsx')
+      })
+    </script>
+  </body>
+</html>
