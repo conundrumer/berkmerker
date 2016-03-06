@@ -4,10 +4,10 @@ const SET_EDITING = 'Bookmarks/SET_EDITING'
 const EDIT = 'Bookmarks/EDIT'
 const REMOVE = 'Bookmarks/REMOVE'
 
-export const add = (name) => ({
+export const add = (name, url) => ({
   type: ADD,
   payload: {
-    item: {name}
+    item: {name, url}
   }
 })
 export const setEditing = (index) => ({
@@ -16,11 +16,11 @@ export const setEditing = (index) => ({
     index
   }
 })
-export const edit = (index, name) => ({
+export const edit = (index, name, url) => ({
   type: EDIT,
   payload: {
     index,
-    item: {name}
+    item: {name, url}
   }
 })
 export const remove = (index) => ({
@@ -31,7 +31,7 @@ export const remove = (index) => ({
 })
 
 /* reducer */
-// items: [{name: string}, ...]
+// items: [{name: string, url: string}, ...], editing: int?
 export default function reducer (state = {items: [], editing: null}, action) {
   let items
   let {type, payload} = action

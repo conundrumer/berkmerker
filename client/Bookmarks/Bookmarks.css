@@ -1,0 +1,7 @@
+.urlInput:invalid {
+  background-color: #ffdddd;
+}
+
+.urlInput:valid {
+  background-color: #ddffdd;
+}

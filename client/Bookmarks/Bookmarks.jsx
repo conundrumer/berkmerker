@@ -1,20 +1,22 @@
 /* component */
 import React, {PropTypes} from 'react'
 
-// import styles from './HelloWorld.css!'
+import styles from './Bookmarks.css!'
 
-export const Bookmark = ({name, editing, setEditing, cancelEditing, edit, remove}) => {
-  let input
+export const Bookmark = ({name, url, editing, setEditing, cancelEditing, edit, remove}) => {
+  let nameInput, urlInput
+  let onSubmit = () => edit(nameInput.value, urlInput.value)
   return editing ? (
     <div>
-      <input type='text' defaultValue={name} ref={node => input = node} />
-      <button onClick={() => edit(input.value)}>Submit</button>
+      <input type='text' defaultValue={name} ref={node => nameInput = node} />
+      <input className={styles.urlInput} type='url' defaultValue={url} ref={node => urlInput = node} />
+      <button onClick={onSubmit}>Submit</button>
       <button onClick={cancelEditing}>Cancel</button>
       <button onClick={remove}>Remove</button>
     </div>
   ) : (
     <div>
-      <span>{name}</span>
+      <span><a href={url} target='_blank'>{name}</a></span>
       <button onClick={setEditing}>Edit</button>
     </div>
   )
@@ -22,6 +24,7 @@ export const Bookmark = ({name, editing, setEditing, cancelEditing, edit, remove
 
 Bookmark.PropTypes = {
   name: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   editing: PropTypes.bool.isRequired,
   setEditing: PropTypes.func.isRequired,
   cancelEditing: PropTypes.func.isRequired,
@@ -30,11 +33,17 @@ Bookmark.PropTypes = {
 }
 
 export const Bookmarks = ({items, add}) => {
-  let input
+  let nameInput, urlInput
+  let onSubmit = () => {
+    add(nameInput.value, urlInput.value)
+    nameInput.value = ''
+    urlInput.value = ''
+  }
   return (
     <div>
-      <input type='text' ref={node => input = node} />
-      <button onClick={() => { add(input.value); input.value = '' }}>Add</button>
+      <input type='text' ref={node => nameInput = node} />
+      <input className={styles.urlInput} type='text' ref={node => urlInput = node} />
+      <button onClick={onSubmit}>Add</button>
       {items.map((item, i) =>
         <Bookmark {...item} key={i} />
       )}
@@ -59,8 +68,9 @@ const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, disp
 
 const mergeProps = ({items, editing}, {add, setEditing, edit, remove}) => ({
   add,
-  items: items.map(({name}, i) => ({
+  items: items.map(({name, url}, i) => ({
     name,
+    url,
     editing: i === editing,
     setEditing: () => setEditing(i),
     cancelEditing: () => setEditing(null),
