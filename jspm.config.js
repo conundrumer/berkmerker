@@ -27,6 +27,7 @@ SystemJS.config({
     "react-dom": "npm:react-dom@0.14.7",
     "react-redux": "npm:react-redux@4.4.0",
     "redux": "npm:redux@3.3.1",
+    "redux-logger": "npm:redux-logger@2.6.1",
     "stream": "github:jspm/nodelibs-stream@0.2.0-alpha",
     "systemjs-hot-reloader": "github:capaj/systemjs-hot-reloader@0.5.6",
     "tty": "github:jspm/nodelibs-tty@0.2.0-alpha",

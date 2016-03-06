@@ -23,7 +23,8 @@
       "react": "npm:react@^0.14.7",
       "react-dom": "npm:react-dom@^0.14.7",
       "react-redux": "npm:react-redux@^4.4.0",
-      "redux": "npm:redux@^3.3.1"
+      "redux": "npm:redux@^3.3.1",
+      "redux-logger": "npm:redux-logger@^2.6.1"
     },
     "devDependencies": {
       "babel-plugin-transform-react-jsx": "npm:babel-plugin-transform-react-jsx@^6.6.4",
