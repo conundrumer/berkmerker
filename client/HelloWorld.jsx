@@ -1,24 +1,39 @@
+/* actions */
+const INC = 'INC'
+
+const inc = () => ({type: INC})
+
+// const actionTypes = {INC}
+const actions = {inc}
+
+/* reducer */
+export function reducer (state = {text: 'hello', counter: 0}, action) {
+  if (action.type === INC) {
+    return {
+      text: state.text,
+      counter: state.counter + 1
+    }
+  }
+  return state
+}
+
+/* component */
 import React from 'react'
-import { connect } from 'react-redux'
 
 import styles from './HelloWorld.css!'
 
-const HelloWorld = ({text, onClick}) => (
-  <h1 className={styles.HelloWorld} onClick={onClick}>{text}</h1>
+export const HelloWorld = ({text, inc}) => (
+  <h1 className={styles.HelloWorld} onClick={inc}>{text}</h1>
 )
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    text: `${state.text} ${ownProps.text} ${state.counter}`
-  }
-}
+/* container */
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    onClick: () => {
-      dispatch({type: 'INC'})
-    }
-  }
-}
+const mapStateToProps = ({helloWorld: state}, props) => ({
+  text: `${state.text} ${props.text} ${state.counter}`
+})
+
+const mapDispatchToProps = (dispatch, props) => bindActionCreators({inc: actions.inc}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(HelloWorld)
