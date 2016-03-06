@@ -1,7 +1,11 @@
 import React from 'react'
 
 import HelloWorld from './HelloWorld.jsx'
+import Bookmarks from './Bookmarks.jsx'
 
 export default () => (
-  <HelloWorld text='woRld' />
+  <div>
+    <HelloWorld text='woRld' />
+    <Bookmarks />
+  </div>
 )

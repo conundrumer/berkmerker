@@ -20,7 +20,7 @@ if (logger) {
 }
 const store = getState('redux-store', () => createStore(reducer, applyMiddleware(...middlewares)), (store) => store.replaceReducer(reducer))
 
-store.dispatch({type: 'INIT'})
+// store.dispatch({type: 'INIT'})
 
 render(App, store, document.getElementById('container'))
 // console.log('rendered')
