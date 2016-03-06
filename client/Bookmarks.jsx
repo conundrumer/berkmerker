@@ -1,22 +1,64 @@
 /* actions */
 const ADD = 'Bookmarks/ADD'
+const SET_EDITING = 'Bookmarks/SET_EDITING'
+const EDIT = 'Bookmarks/EDIT'
 const REMOVE = 'Bookmarks/REMOVE'
 
-const add = (text) => ({type: ADD, payload: {text}})
-const remove = (index) => ({type: REMOVE, payload: {index}})
+const add = (name) => ({
+  type: ADD,
+  payload: {
+    item: {name}
+  }
+})
+const setEditing = (index) => ({
+  type: SET_EDITING,
+  payload: {
+    index
+  }
+})
+const edit = (index, name) => ({
+  type: EDIT,
+  payload: {
+    index,
+    item: {name}
+  }
+})
+const remove = (index) => ({
+  type: REMOVE,
+  payload: {
+    index
+  }
+})
 
-const actions = {add, remove}
+const actions = {add, setEditing, edit, remove}
 
 /* reducer */
-export function reducer (state = {items: []}, action) {
-  switch (action.type) {
+// items: [{name: string}, ...]
+export function reducer (state = {items: [], editing: null}, action) {
+  let items
+  let {type, payload} = action
+  switch (type) {
     case ADD:
       return {
-        items: [action.payload, ...state.items]
+        editing: null,
+        items: [payload.item, ...state.items]
+      }
+    case SET_EDITING:
+      return {
+        ...state,
+        editing: payload.index
+      }
+    case EDIT:
+      items = [...state.items]
+      items[payload.index] = {...payload.item}
+      return {
+        editing: null,
+        items
       }
     case REMOVE:
       return {
-        items: state.items.filter((_, i) => action.payload.index !== i)
+        editing: null,
+        items: state.items.filter((_, i) => payload.index !== i)
       }
     default:
       return state
@@ -28,21 +70,38 @@ import React from 'react'
 
 // import styles from './HelloWorld.css!'
 
-export const Bookmark = ({text, remove}) => (
-  <div>
-    <span>{text}</span>
-    <button onClick={remove}>Remove</button>
-  </div>
-)
+export const Bookmark = ({name, editing, setEditing, cancelEditing, edit, remove}) => {
+  let input
+  return editing ? (
+    <div>
+      <input type='text' defaultValue={name} ref={node => input = node} />
+      <button onClick={() => edit(input.value)}>Submit</button>
+      <button onClick={cancelEditing}>Cancel</button>
+      <button onClick={remove}>Remove</button>
+    </div>
+  ) : (
+    <div>
+      <span>{name}</span>
+      <button onClick={setEditing}>Edit</button>
+    </div>
+  )
+}
 
-export const Bookmarks = ({items, add, remove}) => {
+export const Bookmarks = ({items, editing, add, setEditing, edit, remove}) => {
   let input
   return (
     <div>
-      <input type='text' ref={node => { input = node }} />
+      <input type='text' ref={node => input = node} />
       <button onClick={() => { add(input.value); input.value = '' }}>Add</button>
       {items.map((item, i) =>
-        <Bookmark key={i} remove={() => remove(i)} {...item} />
+        <Bookmark {...item}
+          key={i}
+          editing={i === editing}
+          setEditing={() => setEditing(i)}
+          cancelEditing={() => setEditing(null)}
+          edit={(...args) => edit(i, ...args)}
+          remove={() => remove(i)}
+        />
       )}
     </div>
   )
