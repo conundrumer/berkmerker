@@ -3,8 +3,7 @@ const ADD = 'Bookmarks/ADD'
 const SET_EDITING = 'Bookmarks/SET_EDITING'
 const EDIT = 'Bookmarks/EDIT'
 const REMOVE = 'Bookmarks/REMOVE'
-const ADD_TAG = 'Bookmarks/ADD_TAG'
-const REMOVE_TAG = 'Bookmarks/REMOVE_TAG'
+const MODIFY_TAGS = 'Bookmarks/MODIFY_TAGS'
 
 export const add = (name, url) => ({
   type: ADD,
@@ -31,24 +30,18 @@ export const remove = (index) => ({
     index
   }
 })
-export const addTag = (index, tag) => ({
-  type: ADD_TAG,
+export const modifyTags = (index, tagAction) => ({
+  type: MODIFY_TAGS,
   payload: {
     index,
-    tag
+    tagAction
   }
 })
-export const removeTag = (index, tagIndex) => ({
-  type: REMOVE_TAG,
-  payload: {
-    index,
-    tagIndex
-  }
-})
-
 /* reducer */
 import update from 'react-addons-update'
 import { combineReducers } from 'redux'
+
+import tagsReducer from '../tags/reduxModule.js'
 
 // editing: int?
 function editing (state = null, action) {
@@ -70,7 +63,7 @@ function items (state = [], action) {
   let {type, payload} = action
   switch (type) {
     case ADD:
-      return [{tags: [], ...payload.item}, ...state]
+      return [{tags: tagsReducer(), ...payload.item}, ...state]
     case EDIT:
       return update(state, {
         [payload.index]: {
@@ -81,19 +74,11 @@ function items (state = [], action) {
       return update(state, {
         $splice: [[payload.index, 1]]
       })
-    case ADD_TAG:
+    case MODIFY_TAGS:
       return update(state, {
         [payload.index]: {
           tags: {
-            $apply: (tags) => tags.includes(payload.tag) ? tags : [...tags, payload.tag]
-          }
-        }
-      })
-    case REMOVE_TAG:
-      return update(state, {
-        [payload.index]: {
-          tags: {
-            $splice: [[payload.tagIndex, 1]]
+            $apply: (tags) => tagsReducer(tags, payload.tagAction)
           }
         }
       })

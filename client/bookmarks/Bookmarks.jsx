@@ -25,12 +25,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as actionCreators from './reduxModule.js'
+import {add as addTag, remove as removeTag} from '../tags/reduxModule.js'
 
 const mapStateToProps = ({ui: {bookmarks}}) => ({...bookmarks})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
-const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag, removeTag}) => ({
+const mergeProps = ({items, editing}, {add, setEditing, edit, remove, modifyTags}) => ({
   add,
   items: items.map(({name, url, tags}, i) => ({
     name,
@@ -40,8 +41,8 @@ const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag, re
     setEditing: () => setEditing(i),
     edit: (...args) => edit(i, ...args),
     remove: () => remove(i),
-    addTag: (tag) => addTag(i, tag),
-    removeTag: (tagIndex) => removeTag(i, tagIndex)
+    addTag: (tag) => modifyTags(i, addTag(tag)),
+    removeTag: (tagIndex) => modifyTags(i, removeTag(tagIndex))
   }))
 })
 

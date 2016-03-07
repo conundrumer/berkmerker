@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 
 import BookmarkInput from './BookmarkInput.jsx'
-import Tags from './Tags.jsx'
+import Tags from '../tags/Tags.jsx'
 import InputFields from './InputFields.jsx'
 
 const Bookmark = ({name, url, tags, editing, setEditing, edit, remove, addTag, removeTag}) => {
@@ -16,7 +16,7 @@ const Bookmark = ({name, url, tags, editing, setEditing, edit, remove, addTag, r
     <div>
       <span><a href={url} target='_blank'>{name}</a></span>
       <button onClick={setEditing}>Edit</button>
-      <Tags tags={tags} />
+      <Tags tags={tags} onClick={() => {}} />
     </div>
   )
 }
