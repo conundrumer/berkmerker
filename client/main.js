@@ -11,16 +11,20 @@ import { applyMiddleware, createStore } from 'redux'
 import App from './App.jsx'
 import render from './render.jsx'
 import reducer from './reducer.js'
-import getState from './getState.js'
+import {getState} from './hotReloadState.js'
+import deduplicateTag from './middlewares/deduplicateTag.js'
 import Debugger from './debug.js'
 
-let middlewares = []
+let middlewares = [deduplicateTag]
 if (Debugger) {
   middlewares = [...middlewares, Debugger.diffLogger, Debugger.logger]
+  middlewares = middlewares.map(Debugger.hotReloadMiddleware)
 }
-const store = getState('redux-store', () => createStore(reducer, applyMiddleware(...middlewares)), (store) => store.replaceReducer(reducer))
+
+let store = createStore(reducer, applyMiddleware(...middlewares))
 
 if (Debugger) {
+  store = getState('redux-store', () => store, (store) => store.replaceReducer(reducer))
   Debugger.setGlobalStore(store)
 }
 // store.dispatch({type: 'INIT'})

@@ -2,7 +2,7 @@
 
 let persistentState = new Map()
 
-export default function getState (key, getNew, getNext) {
+export function getState (key, getNew, getNext) {
   let state
   if (!persistentState.has(key)) {
     state = getNew()
@@ -15,6 +15,10 @@ export default function getState (key, getNew, getNext) {
       }
     }
   }
-  persistentState.set(key, state)
+  setState(key, state)
   return state
+}
+
+export function setState (key, state) {
+  persistentState.set(key, state)
 }

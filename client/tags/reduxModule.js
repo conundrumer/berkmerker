@@ -28,7 +28,7 @@ export default function reducer (state = [], action) {
   let {type, payload} = action
   switch (type) {
     case ADD:
-      return state.includes(payload.tag) ? state : [...state, payload.tag]
+      return [...state, payload.tag]
     case REMOVE:
       return update(state, {
         $splice: [[payload.index, 1]]
