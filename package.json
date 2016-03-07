@@ -24,6 +24,7 @@
       "react-dom": "npm:react-dom@^0.14.7",
       "react-redux": "npm:react-redux@^4.4.0",
       "redux": "npm:redux@^3.3.1",
+      "redux-diff-logger": "npm:redux-diff-logger@^0.0.9",
       "redux-logger": "npm:redux-logger@^2.6.1"
     },
     "devDependencies": {
