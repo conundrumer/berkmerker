@@ -30,7 +30,7 @@ const mapStateToProps = ({ui: {bookmarks}}) => ({...bookmarks})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
-const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag}) => ({
+const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag, removeTag}) => ({
   add,
   items: items.map(({name, url, tags}, i) => ({
     name,
@@ -38,10 +38,10 @@ const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag}) =
     tags,
     editing: i === editing,
     setEditing: () => setEditing(i),
-    cancelEditing: () => setEditing(null),
     edit: (...args) => edit(i, ...args),
     remove: () => remove(i),
-    addTag: (tag) => addTag(i, tag)
+    addTag: (tag) => addTag(i, tag),
+    removeTag: (tagIndex) => removeTag(i, tagIndex)
   }))
 })
 

@@ -4,6 +4,7 @@ const SET_EDITING = 'Bookmarks/SET_EDITING'
 const EDIT = 'Bookmarks/EDIT'
 const REMOVE = 'Bookmarks/REMOVE'
 const ADD_TAG = 'Bookmarks/ADD_TAG'
+const REMOVE_TAG = 'Bookmarks/REMOVE_TAG'
 
 export const add = (name, url) => ({
   type: ADD,
@@ -35,6 +36,13 @@ export const addTag = (index, tag) => ({
   payload: {
     index,
     tag
+  }
+})
+export const removeTag = (index, tagIndex) => ({
+  type: REMOVE_TAG,
+  payload: {
+    index,
+    tagIndex
   }
 })
 
@@ -76,6 +84,17 @@ export default function reducer (state = {items: [], editing: null}, action) {
       items[payload.index] = {
         ...item,
         tags: [...item.tags, payload.tag]
+      }
+      return {
+        ...state,
+        items
+      }
+    case REMOVE_TAG:
+      items = [...state.items]
+      item = items[payload.index]
+      items[payload.index] = {
+        ...item,
+        tags: item.tags.filter((_, i) => payload.tagIndex !== i)
       }
       return {
         ...state,
