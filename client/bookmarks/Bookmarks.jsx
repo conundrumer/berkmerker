@@ -3,22 +3,49 @@ import React, {PropTypes} from 'react'
 
 import styles from './Bookmarks.css!'
 
-export const BookmarkInput = ({name, url, submitName = 'Submit', onSubmit, children}) => {
-  let nameInput, urlInput
+export const InputFields = ({fields, onSubmit, submitName = 'Submit'}) => {
+  let inputs = Array(fields.length)
   let submit = () => {
-    onSubmit(nameInput.value, urlInput.value)
-    nameInput.value = ''
-    urlInput.value = ''
+    onSubmit(...inputs.map(input => input.value))
+    inputs.forEach(input => input.value = '')
   }
   return (
     <div>
-      <input type='text' defaultValue={name} ref={node => nameInput = node} />
-      <input className={styles.urlInput} type='url' defaultValue={url} ref={node => urlInput = node} />
+      {fields.map(({type = 'text', defaultValue, ...fieldProps}, i) =>
+        <input {...fieldProps}
+          ref={node => inputs[i] = node}
+          key={i}
+          type={type}
+          defaultValue={defaultValue}
+        />
+      )}
       <button onClick={submit}>{submitName}</button>
-      {children}
     </div>
   )
 }
+
+InputFields.PropTypes = {
+  fields: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.string,
+    defaultValue: PropTypes.any
+  }).isRequired).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  submitName: PropTypes.string
+}
+
+export const BookmarkInput = ({name, url, submitName, onSubmit}) => (
+  <InputFields
+    submitName={submitName}
+    onSubmit={onSubmit}
+    fields={[{
+      defaultValue: name
+    }, {
+      defaultValue: url,
+      type: 'url',
+      className: styles.urlInput
+    }]}
+  />
+)
 
 BookmarkInput.PropTypes = {
   name: PropTypes.string,
@@ -35,29 +62,13 @@ export const Tags = ({tags, editing}) => (
   </div>
 )
 
-export const TagInput = ({onSubmit}) => {
-  let input
-  let submit = () => {
-    onSubmit(input.value)
-    input.value = ''
-  }
-  return (
-    <div>
-      <input type='text' ref={node => input = node} />
-      <button onClick={submit}>Add Tag</button>
-    </div>
-  )
-}
-
 export const Bookmark = ({name, url, tags, editing, setEditing, cancelEditing, edit, remove, addTag}) => {
   return editing ? (
     <div>
-      <BookmarkInput submitName='Submit' name={name} url={url} onSubmit={edit}>
-        <button onClick={cancelEditing}>Cancel</button>
-        <button onClick={remove}>Remove</button>
-        <Tags tags={tags} editing={true} />
-        <TagInput onSubmit={addTag}/>
-      </BookmarkInput>
+      <BookmarkInput submitName='Done' name={name} url={url} onSubmit={edit} />
+      <button onClick={remove}>Remove</button>
+      <Tags tags={tags} editing={true} />
+      <InputFields onSubmit={addTag} submitName='Add Tag' fields={[{}]} />
     </div>
   ) : (
     <div>
