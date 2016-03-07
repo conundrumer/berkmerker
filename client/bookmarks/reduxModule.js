@@ -48,63 +48,58 @@ export const removeTag = (index, tagIndex) => ({
 
 /* reducer */
 import update from 'react-addons-update'
+import { combineReducers } from 'redux'
 
-// items: [{name: string, url: string, tags: [string, ...]}, ...], editing: int?
-export default function reducer (state = {items: [], editing: null}, action) {
-  let {items, editing} = state
+// editing: int?
+function editing (state = null, action) {
   let {type, payload} = action
   switch (type) {
     case ADD:
-      return {
-        editing: null,
-        items: [{tags: [], ...payload.item}, ...items]
-      }
-    case SET_EDITING:
-      return {
-        items: items,
-        editing: payload.index
-      }
     case EDIT:
-      return {
-        items: update(items, {
-          [payload.index]: {
-            $apply: (item) =>
-              update(item, {$merge: payload.item})
-          }
-        }),
-        editing: null
-      }
     case REMOVE:
-      return {
-        editing: null,
-        items: update(items, {
-          $splice: [[payload.index, 1]]
-        })
-      }
-    case ADD_TAG:
-      return {
-        editing: editing,
-        items: update(items, {
-          [payload.index]: {
-            tags: {
-              $apply: (tags) =>
-                tags.includes(payload.tag) ? tags : [...tags, payload.tag]
-            }
-          }
-        })
-      }
-    case REMOVE_TAG:
-      return {
-        editing: editing,
-        items: update(items, {
-          [payload.index]: {
-            tags: {
-              $splice: [[payload.tagIndex, 1]]
-            }
-          }
-        })
-      }
+      return null
+    case SET_EDITING:
+      return payload.index
     default:
       return state
   }
 }
+
+// items: [{name: string, url: string, tags: [string, ...]}, ...]
+function items (state = [], action) {
+  let {type, payload} = action
+  switch (type) {
+    case ADD:
+      return [{tags: [], ...payload.item}, ...state]
+    case EDIT:
+      return update(state, {
+        [payload.index]: {
+          $apply: (item) => update(item, {$merge: payload.item})
+        }
+      })
+    case REMOVE:
+      return update(state, {
+        $splice: [[payload.index, 1]]
+      })
+    case ADD_TAG:
+      return update(state, {
+        [payload.index]: {
+          tags: {
+            $apply: (tags) => tags.includes(payload.tag) ? tags : [...tags, payload.tag]
+          }
+        }
+      })
+    case REMOVE_TAG:
+      return update(state, {
+        [payload.index]: {
+          tags: {
+            $splice: [[payload.tagIndex, 1]]
+          }
+        }
+      })
+    default:
+      return state
+  }
+}
+
+export default combineReducers({editing, items})
