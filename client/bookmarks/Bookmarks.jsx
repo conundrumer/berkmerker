@@ -42,7 +42,7 @@ const mergeProps = ({items, editing}, {add, setEditing, edit, remove, modifyTags
     edit: (...args) => edit(i, ...args),
     remove: () => remove(i),
     addTag: (tag) => modifyTags(i, addTag(tag)),
-    removeTag: (tagIndex) => modifyTags(i, removeTag(tagIndex))
+    removeTag: (tag, tagIndex) => modifyTags(i, removeTag(tag, tagIndex))
   }))
 })
 

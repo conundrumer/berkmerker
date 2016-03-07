@@ -9,9 +9,10 @@ export const add = (tag) => ({
   }
 })
 
-export const remove = (index) => ({
+export const remove = (tag, index) => ({
   type: REMOVE,
   payload: {
+    tag,
     index
   }
 })

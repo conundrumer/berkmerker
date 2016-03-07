@@ -7,7 +7,7 @@ const Tags = ({tags, editing, onClick = () => {}}) => (
     {tags.map((tag, i) =>
       <span
         key={i}
-        onClick={() => onClick(i)}
+        onClick={() => onClick(tag, i)}
         className={`${styles.tag} ${editing ? styles.tagEditing : ''}`}
       > #{tag} </span>
     )}
