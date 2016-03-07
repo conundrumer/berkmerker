@@ -1,11 +1,9 @@
 import { combineReducers } from 'redux'
 
-import {reducer as helloWorld} from './HelloWorld.jsx'
 import bookmarks from './bookmarks/reduxModule.js'
 
 const reducers = combineReducers({
-  ui: combineReducers({helloWorld, bookmarks}),
-  foo: () => ({})
+  ui: combineReducers({bookmarks})
 })
 
 export default function rootReducer (state, action) {
