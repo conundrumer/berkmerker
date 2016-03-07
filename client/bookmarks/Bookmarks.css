@@ -5,3 +5,11 @@
 .urlInput:valid {
   background-color: #ddffdd;
 }
+
+.tagEditing:hover {
+  text-decoration: line-through;
+}
+
+.tag {
+  font-size: 0.8em;
+}

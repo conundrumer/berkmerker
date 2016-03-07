@@ -3,6 +3,7 @@ const ADD = 'Bookmarks/ADD'
 const SET_EDITING = 'Bookmarks/SET_EDITING'
 const EDIT = 'Bookmarks/EDIT'
 const REMOVE = 'Bookmarks/REMOVE'
+const ADD_TAG = 'Bookmarks/ADD_TAG'
 
 export const add = (name, url) => ({
   type: ADD,
@@ -29,17 +30,24 @@ export const remove = (index) => ({
     index
   }
 })
+export const addTag = (index, tag) => ({
+  type: ADD_TAG,
+  payload: {
+    index,
+    tag
+  }
+})
 
 /* reducer */
-// items: [{name: string, url: string}, ...], editing: int?
+// items: [{name: string, url: string, tags: [string, ...]}, ...], editing: int?
 export default function reducer (state = {items: [], editing: null}, action) {
-  let items
+  let items, item
   let {type, payload} = action
   switch (type) {
     case ADD:
       return {
         editing: null,
-        items: [payload.item, ...state.items]
+        items: [{tags: [], ...payload.item}, ...state.items]
       }
     case SET_EDITING:
       return {
@@ -48,7 +56,8 @@ export default function reducer (state = {items: [], editing: null}, action) {
       }
     case EDIT:
       items = [...state.items]
-      items[payload.index] = {...payload.item}
+      item = items[payload.index]
+      items[payload.index] = {...item, ...payload.item}
       return {
         editing: null,
         items
@@ -57,6 +66,20 @@ export default function reducer (state = {items: [], editing: null}, action) {
       return {
         editing: null,
         items: state.items.filter((_, i) => payload.index !== i)
+      }
+    case ADD_TAG:
+      if (state.items[payload.index].tags.includes(payload.tag)) {
+        return state
+      }
+      items = [...state.items]
+      item = items[payload.index]
+      items[payload.index] = {
+        ...item,
+        tags: [...item.tags, payload.tag]
+      }
+      return {
+        ...state,
+        items
       }
     default:
       return state

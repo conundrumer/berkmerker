@@ -27,18 +27,43 @@ BookmarkInput.PropTypes = {
   onSubmit: PropTypes.func.isRequired
 }
 
-export const Bookmark = ({name, url, editing, setEditing, cancelEditing, edit, remove}) => {
+export const Tags = ({tags, editing}) => (
+  <div>
+    {tags.map((tag, i) =>
+      <span className={`${styles.tag} ${editing ? styles.tagEditing : ''}`} key={i}> #{tag} </span>
+    )}
+  </div>
+)
+
+export const TagInput = ({onSubmit}) => {
+  let input
+  let submit = () => {
+    onSubmit(input.value)
+    input.value = ''
+  }
+  return (
+    <div>
+      <input type='text' ref={node => input = node} />
+      <button onClick={submit}>Add Tag</button>
+    </div>
+  )
+}
+
+export const Bookmark = ({name, url, tags, editing, setEditing, cancelEditing, edit, remove, addTag}) => {
   return editing ? (
     <div>
       <BookmarkInput submitName='Submit' name={name} url={url} onSubmit={edit}>
         <button onClick={cancelEditing}>Cancel</button>
         <button onClick={remove}>Remove</button>
+        <Tags tags={tags} editing={true} />
+        <TagInput onSubmit={addTag}/>
       </BookmarkInput>
     </div>
   ) : (
     <div>
       <span><a href={url} target='_blank'>{name}</a></span>
       <button onClick={setEditing}>Edit</button>
+      <Tags tags={tags} />
     </div>
   )
 }
@@ -46,11 +71,13 @@ export const Bookmark = ({name, url, editing, setEditing, cancelEditing, edit, r
 Bookmark.PropTypes = {
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   editing: PropTypes.bool.isRequired,
   setEditing: PropTypes.func.isRequired,
   cancelEditing: PropTypes.func.isRequired,
   edit: PropTypes.func.isRequired,
-  remove: PropTypes.func.isRequired
+  remove: PropTypes.func.isRequired,
+  addTag: PropTypes.func.isRequired
 }
 
 export const Bookmarks = ({items, add}) => {
@@ -79,16 +106,18 @@ const mapStateToProps = ({ui: {bookmarks}}) => ({...bookmarks})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
-const mergeProps = ({items, editing}, {add, setEditing, edit, remove}) => ({
+const mergeProps = ({items, editing}, {add, setEditing, edit, remove, addTag}) => ({
   add,
-  items: items.map(({name, url}, i) => ({
+  items: items.map(({name, url, tags}, i) => ({
     name,
     url,
+    tags,
     editing: i === editing,
     setEditing: () => setEditing(i),
     cancelEditing: () => setEditing(null),
     edit: (...args) => edit(i, ...args),
-    remove: () => remove(i)
+    remove: () => remove(i),
+    addTag: (tag) => addTag(i, tag)
   }))
 })
 
