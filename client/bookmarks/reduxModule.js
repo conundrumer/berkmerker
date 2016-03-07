@@ -47,58 +47,62 @@ export const removeTag = (index, tagIndex) => ({
 })
 
 /* reducer */
+import update from 'react-addons-update'
+
 // items: [{name: string, url: string, tags: [string, ...]}, ...], editing: int?
 export default function reducer (state = {items: [], editing: null}, action) {
-  let items, item
+  let {items, editing} = state
   let {type, payload} = action
   switch (type) {
     case ADD:
       return {
         editing: null,
-        items: [{tags: [], ...payload.item}, ...state.items]
+        items: [{tags: [], ...payload.item}, ...items]
       }
     case SET_EDITING:
       return {
-        ...state,
+        items: items,
         editing: payload.index
       }
     case EDIT:
-      items = [...state.items]
-      item = items[payload.index]
-      items[payload.index] = {...item, ...payload.item}
       return {
-        editing: null,
-        items
+        items: update(items, {
+          [payload.index]: {
+            $apply: (item) =>
+              update(item, {$merge: payload.item})
+          }
+        }),
+        editing: null
       }
     case REMOVE:
       return {
         editing: null,
-        items: state.items.filter((_, i) => payload.index !== i)
+        items: update(items, {
+          $splice: [[payload.index, 1]]
+        })
       }
     case ADD_TAG:
-      if (state.items[payload.index].tags.includes(payload.tag)) {
-        return state
-      }
-      items = [...state.items]
-      item = items[payload.index]
-      items[payload.index] = {
-        ...item,
-        tags: [...item.tags, payload.tag]
-      }
       return {
-        ...state,
-        items
+        editing: editing,
+        items: update(items, {
+          [payload.index]: {
+            tags: {
+              $apply: (tags) =>
+                tags.includes(payload.tag) ? tags : [...tags, payload.tag]
+            }
+          }
+        })
       }
     case REMOVE_TAG:
-      items = [...state.items]
-      item = items[payload.index]
-      items[payload.index] = {
-        ...item,
-        tags: item.tags.filter((_, i) => payload.tagIndex !== i)
-      }
       return {
-        ...state,
-        items
+        editing: editing,
+        items: update(items, {
+          [payload.index]: {
+            tags: {
+              $splice: [[payload.tagIndex, 1]]
+            }
+          }
+        })
       }
     default:
       return state

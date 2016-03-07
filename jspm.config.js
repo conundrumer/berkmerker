@@ -24,6 +24,7 @@ SystemJS.config({
     "plugin-babel": "npm:systemjs-plugin-babel@0.0.8",
     "process": "github:jspm/nodelibs-process@0.2.0-alpha",
     "react": "npm:react@0.14.7",
+    "react-addons-update": "npm:react-addons-update@0.14.7",
     "react-dom": "npm:react-dom@0.14.7",
     "react-redux": "npm:react-redux@4.4.0",
     "redux": "npm:redux@3.3.1",
