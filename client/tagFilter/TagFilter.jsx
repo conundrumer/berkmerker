@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react'
 
 const TagFilter = ({tags}) => (
   <div>
-    {Array.from(tags).map(([tag, {count, toggled}], i) =>
+    {tags.map(([tag, {count, toggled}], i) =>
       <div key={i}>#{tag} ({count})</div>
     )}
   </div>
@@ -27,7 +27,7 @@ import { connect } from 'react-redux'
 // import * as actionCreators from './reduxModule.js'
 let actionCreators = {}
 
-const mapStateToProps = ({ui: {tagFilter}}) => ({...tagFilter})
+const mapStateToProps = ({ui: {tagFilter: {tags}}}) => ({tags: Array.from(tags)})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
