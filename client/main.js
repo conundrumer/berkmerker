@@ -25,9 +25,15 @@ let store = createStore(reducer, applyMiddleware(...middlewares))
 
 if (Debugger) {
   store = getState('redux-store', () => store, (store) => store.replaceReducer(reducer))
-  Debugger.setGlobalStore(store)
+  Debugger.setGlobal('store', store)
 }
 // store.dispatch({type: 'INIT'})
 
-render(App, store, document.getElementById('container'))
+let container = document.getElementById('container')
+const renderApp = () => render(App, store, container)
+renderApp()
 // console.log('rendered')
+
+if (Debugger) {
+  Debugger.makeForceRerender(renderApp, container)
+}
