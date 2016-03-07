@@ -1,0 +1,7 @@
+.tagEditing:hover {
+  text-decoration: line-through;
+}
+
+.tag {
+  font-size: 0.8em;
+}
