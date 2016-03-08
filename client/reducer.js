@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 
-import bookmarks from './bookmarks/reduxModule.js'
-import tagFilter from './tagFilter/reduxModule.js'
+import bookmarks from './bookmarks/reducer.js'
+import tagFilter from './tagFilter/reducer.js'
 
 const reducers = combineReducers({
   ui: combineReducers({bookmarks, tagFilter})

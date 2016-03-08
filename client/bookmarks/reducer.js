@@ -1,45 +1,15 @@
-/* actions */
-const ADD = 'Bookmarks/ADD'
-const SET_EDITING = 'Bookmarks/SET_EDITING'
-const EDIT = 'Bookmarks/EDIT'
-const REMOVE = 'Bookmarks/REMOVE'
-const MODIFY_TAGS = 'Bookmarks/MODIFY_TAGS'
-
-export const add = (name, url) => ({
-  type: ADD,
-  payload: {
-    item: {name, url}
-  }
-})
-export const setEditing = (index) => ({
-  type: SET_EDITING,
-  payload: {
-    index
-  }
-})
-export const edit = (index, name, url) => ({
-  type: EDIT,
-  payload: {
-    index,
-    item: {name, url}
-  }
-})
-export const remove = (index) => ({
-  type: REMOVE,
-  payload: {
-    index
-  }
-})
-export const modifyTags = (index, tagAction) => ({
-  type: MODIFY_TAGS,
-  payload: {
-    index,
-    tagAction
-  }
-})
-/* reducer */
 import update from 'react-addons-update'
 import { combineReducers } from 'redux'
+
+import * as Actions from './actions.js'
+import * as TagFilterActions from '../tagFilter/actions.js'
+
+const ADD = Actions.add().type
+const SET_EDITING = Actions.setEditing().type
+const EDIT = Actions.edit().type
+const REMOVE = Actions.remove().type
+const MODIFY = Actions.modifyTags().type
+const TOGGLE = TagFilterActions.toggle().type
 
 import tagsReducer from '../tags/reduxModule.js'
 
@@ -50,6 +20,7 @@ function editing (state = null, action) {
     case ADD:
     case EDIT:
     case REMOVE:
+    case TOGGLE:
       return null
     case SET_EDITING:
       return payload.index
@@ -74,7 +45,7 @@ function items (state = [], action) {
       return update(state, {
         $splice: [[payload.index, 1]]
       })
-    case MODIFY_TAGS:
+    case MODIFY:
       return update(state, {
         [payload.index]: {
           tags: {

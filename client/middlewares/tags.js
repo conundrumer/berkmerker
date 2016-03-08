@@ -1,8 +1,8 @@
-import {modifyTags} from '../bookmarks/reduxModule.js'
-import {add} from '../tags/reduxModule.js'
+import * as BookmarksActions from '../bookmarks/actions.js'
+import * as TagsActions from '../tags/reduxModule.js'
 
-const {type: MODIFY} = modifyTags()
-const {type: ADD} = add()
+const MODIFY = BookmarksActions.modifyTags().type
+const ADD = TagsActions.add().type
 
 export default ({getState}) => (next) => (action) => {
   let {type, payload} = action

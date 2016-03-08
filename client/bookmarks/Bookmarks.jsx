@@ -24,10 +24,20 @@ Bookmarks.PropTypes = {
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import * as actionCreators from './reduxModule.js'
+import * as actionCreators from './actions.js'
 import {add as addTag, remove as removeTag} from '../tags/reduxModule.js'
 
-const mapStateToProps = ({ui: {bookmarks}}) => ({...bookmarks})
+const mapStateToProps = ({ui: {bookmarks: {editing, items}, tagFilter: {tags}}}) => {
+  let filtering = Array.from(tags).some(([_, {toggled}]) => toggled)
+  return {
+    editing,
+    items: filtering ? items.filter(({tags: itemTags}) =>
+      itemTags.some(tag =>
+        tags.get(tag).toggled
+      )
+    ) : items
+  }
+}
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 

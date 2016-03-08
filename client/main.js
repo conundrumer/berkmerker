@@ -12,16 +12,18 @@ import App from './App.jsx'
 import render from './render.jsx'
 import reducer from './reducer.js'
 import {getState} from './hotReloadState.js'
-import deduplicateTag from './middlewares/deduplicateTag.js'
+import tagsMiddleware from './middlewares/tags.js'
 import Debugger from './debug.js'
 
-let middlewares = [deduplicateTag]
+let middlewares = [tagsMiddleware]
 if (Debugger) {
   middlewares = [...middlewares, Debugger.diffLogger, Debugger.logger]
   middlewares = middlewares.map(Debugger.hotReloadMiddleware)
 }
 
-let store = createStore(reducer, applyMiddleware(...middlewares))
+let enhancer = applyMiddleware(...middlewares)
+
+let store = createStore(reducer, enhancer)
 
 if (Debugger) {
   store = getState('redux-store', () => store, (store) => store.replaceReducer(reducer))

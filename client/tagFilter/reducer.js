@@ -1,14 +1,13 @@
-import {modifyTags} from '../bookmarks/reduxModule.js'
-import {add, remove} from '../tags/reduxModule.js'
-
-/* actions */
-const {type: MODIFY} = modifyTags()
-const {type: ADD} = add()
-const {type: REMOVE} = remove()
-const TOGGLE = 'tagFilter/TOGGLE'
-
-/* reducer */
 import { combineReducers } from 'redux'
+
+import * as Actions from './actions.js'
+import * as TagActions from '../tags/reduxModule.js'
+import * as BookmarkActions from '../bookmarks/actions.js'
+
+const TOGGLE = Actions.toggle().type
+const ADD = TagActions.add().type
+const REMOVE = TagActions.remove().type
+const MODIFY = BookmarkActions.modifyTags().type
 
 function count (state = 0, action) {
   switch (action.type) {
