@@ -28,12 +28,12 @@ import * as actionCreators from './actions.js'
 import {add as addTag, remove as removeTag} from '../tags/reduxModule.js'
 
 const mapStateToProps = ({ui: {bookmarks: {editing, items}, tagFilter: {tags}}}) => {
-  let filtering = Array.from(tags).some(([_, {toggled}]) => toggled)
+  let filters = Array.from(tags).filter(([_, {toggled}]) => toggled).map(([tag]) => tag)
   return {
     editing,
-    items: filtering ? items.filter(({tags: itemTags}) =>
-      itemTags.some(tag =>
-        tags.get(tag).toggled
+    items: filters.length > 0 ? items.filter(({tags: itemTags}) =>
+      filters.every(tagFilter =>
+        itemTags.includes(tagFilter)
       )
     ) : items
   }
