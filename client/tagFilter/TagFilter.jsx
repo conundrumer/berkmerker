@@ -5,9 +5,9 @@ import React, {PropTypes} from 'react'
 const TagFilter = ({tags, toggle}) => (
   <div>
     {tags.map(([tag, {count, toggled}], i) =>
-      <div>
+      <div key={tag}>
         <input type='checkbox' checked={toggled} onChange={() => toggle(tag)} />
-        <span key={i}>#{tag} ({count})</span>
+        <span>#{tag} ({count})</span>
       </div>
     )}
   </div>
@@ -27,12 +27,12 @@ TagFilter.PropTypes = {
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import * as actionCreators from './actions.js'
+import ActionCreators from './actions.js'
 
 const mapStateToProps = ({ui: {tagFilter: {tags}}}) => ({
   tags: Array.from(tags)
 })
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(TagFilter)

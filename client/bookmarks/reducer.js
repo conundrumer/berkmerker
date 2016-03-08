@@ -1,15 +1,16 @@
 import update from 'react-addons-update'
 import { combineReducers } from 'redux'
 
-import * as Actions from './actions.js'
-import * as TagFilterActions from '../tagFilter/actions.js'
-
-const ADD = Actions.add().type
-const SET_EDITING = Actions.setEditing().type
-const EDIT = Actions.edit().type
-const REMOVE = Actions.remove().type
-const MODIFY = Actions.modifyTags().type
-const TOGGLE = TagFilterActions.toggle().type
+import {
+  ADD,
+  SET_EDITING,
+  EDIT,
+  REMOVE,
+  MODIFY_TAGS,
+} from './actions.js'
+import {
+  TOGGLE
+} from '../tagFilter/actions.js'
 
 import tagsReducer from '../tags/reduxModule.js'
 
@@ -45,7 +46,7 @@ function items (state = [], action) {
       return update(state, {
         $splice: [[payload.index, 1]]
       })
-    case MODIFY:
+    case MODIFY_TAGS:
       return update(state, {
         [payload.index]: {
           tags: {

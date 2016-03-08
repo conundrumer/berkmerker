@@ -1,6 +1,6 @@
 /* actions */
-const ADD = 'Tags/ADD'
-const REMOVE = 'Tags/REMOVE'
+export const ADD = 'Tags/ADD'
+export const REMOVE = 'Tags/REMOVE'
 
 export const add = (tag) => ({
   type: ADD,

@@ -1,40 +1,42 @@
 /* action types */
-const ADD = 'Bookmarks/ADD'
-const SET_EDITING = 'Bookmarks/SET_EDITING'
-const EDIT = 'Bookmarks/EDIT'
-const REMOVE = 'Bookmarks/REMOVE'
-const MODIFY_TAGS = 'Bookmarks/MODIFY_TAGS'
+export const ADD = 'Bookmarks/ADD'
+export const SET_EDITING = 'Bookmarks/SET_EDITING'
+export const EDIT = 'Bookmarks/EDIT'
+export const REMOVE = 'Bookmarks/REMOVE'
+export const MODIFY_TAGS = 'Bookmarks/MODIFY_TAGS'
 
 /* action creators */
-export const add = (name, url) => ({
-  type: ADD,
-  payload: {
-    item: {name, url}
-  }
-})
-export const setEditing = (index) => ({
-  type: SET_EDITING,
-  payload: {
-    index
-  }
-})
-export const edit = (index, name, url) => ({
-  type: EDIT,
-  payload: {
-    index,
-    item: {name, url}
-  }
-})
-export const remove = (index) => ({
-  type: REMOVE,
-  payload: {
-    index
-  }
-})
-export const modifyTags = (index, tagAction) => ({
-  type: MODIFY_TAGS,
-  payload: {
-    index,
-    tagAction
-  }
-})
+export default {
+  add: (name, url) => ({
+    type: ADD,
+    payload: {
+      item: {name, url}
+    }
+  }),
+  setEditing: (index) => ({
+    type: SET_EDITING,
+    payload: {
+      index
+    }
+  }),
+  edit: (index, name, url) => ({
+    type: EDIT,
+    payload: {
+      index,
+      item: {name, url}
+    }
+  }),
+  remove: (index) => ({
+    type: REMOVE,
+    payload: {
+      index
+    }
+  }),
+  modifyTags: (index, tagAction) => ({
+    type: MODIFY_TAGS,
+    payload: {
+      index,
+      tagAction
+    }
+  })
+}

@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux'
 
-import * as Actions from './actions.js'
-import * as TagActions from '../tags/reduxModule.js'
-import * as BookmarkActions from '../bookmarks/actions.js'
-
-const TOGGLE = Actions.toggle().type
-const ADD = TagActions.add().type
-const REMOVE = TagActions.remove().type
-const MODIFY = BookmarkActions.modifyTags().type
+import {
+  TOGGLE
+} from './actions.js'
+import {
+  MODIFY_TAGS
+} from '../bookmarks/actions.js'
+import {
+  ADD,
+  REMOVE
+} from '../tags/reduxModule.js'
 
 function count (state = 0, action) {
   switch (action.type) {
@@ -43,7 +45,7 @@ function tags (state, action) {
   }
   let {type, payload} = action
   switch (type) {
-    case MODIFY:
+    case MODIFY_TAGS:
       action = payload.tagAction
       /* falls through */
     case TOGGLE:

@@ -1,15 +1,16 @@
-import * as BookmarksActions from '../bookmarks/actions.js'
-import * as TagsActions from '../tags/reduxModule.js'
-
-const MODIFY = BookmarksActions.modifyTags().type
-const ADD = TagsActions.add().type
+import {
+  MODIFY_TAGS
+} from '../bookmarks/actions.js'
+import {
+  ADD
+} from '../tags/reduxModule.js'
 
 export default ({getState}) => (next) => (action) => {
   let {type, payload} = action
 
   // deduplicate tags
 
-  if (type !== MODIFY || payload.tagAction.type !== ADD) {
+  if (type !== MODIFY_TAGS || payload.tagAction.type !== ADD) {
     return next(action)
   }
 
