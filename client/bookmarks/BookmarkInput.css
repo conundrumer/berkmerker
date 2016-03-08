@@ -5,3 +5,7 @@
 .urlInput:valid {
   background-color: #ddffdd;
 }
+
+.input {
+  /*padding: 10px;*/
+}

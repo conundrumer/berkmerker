@@ -1,7 +1,13 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .tagEditing:hover {
   text-decoration: line-through;
 }
 
 .tag {
+  padding: 3px;
   font-size: 0.8em;
 }

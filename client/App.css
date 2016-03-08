@@ -1,0 +1,28 @@
+:global body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  padding-left: 30px;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+}
+
+.filterPanel {
+  flex: 0 0 auto;
+  padding: 20px;
+}
+
+.mainPanel {
+  flex: 0 1 500px;
+  padding: 20px;
+}

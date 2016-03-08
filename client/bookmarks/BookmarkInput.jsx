@@ -5,14 +5,19 @@ import styles from './BookmarkInput.css!'
 
 const BookmarkInput = ({name, url, submitName, onSubmit}) => (
   <InputFields
+    className={styles.input}
     submitName={submitName}
     onSubmit={onSubmit}
     fields={[{
-      defaultValue: name
+      label: 'Name',
+      defaultValue: name,
+      placeholder: 'Example Website'
     }, {
+      label: 'URL',
       defaultValue: url,
       type: 'url',
-      className: styles.urlInput
+      className: styles.urlInput,
+      placeholder: 'http://example.org'
     }]}
   />
 )

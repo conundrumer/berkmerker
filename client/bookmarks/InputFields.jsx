@@ -1,22 +1,30 @@
 import React, {PropTypes} from 'react'
 
-const InputFields = ({fields, onSubmit, submitName = 'Submit'}) => {
+import styles from './InputFields.css!'
+
+const InputFields = ({fields, onSubmit, submitName = 'Submit', ...ownProps}) => {
   let inputs = Array(fields.length)
   let submit = () => {
     onSubmit(...inputs.map(input => input.value))
     inputs.forEach(input => input.value = '')
   }
   return (
-    <div>
-      {fields.map(({type = 'text', defaultValue, ...fieldProps}, i) =>
-        <input {...fieldProps}
-          ref={node => inputs[i] = node}
-          key={i}
-          type={type}
-          defaultValue={defaultValue}
-        />
+    <div className={styles.container}>
+      <div>
+      {fields.map(({type = 'text', label, defaultValue, ...fieldProps}, i) =>
+        <div className={styles.field} key={i}>
+          <label>{label}</label>
+          <input {...fieldProps}
+            ref={node => inputs[i] = node}
+            type={type}
+            defaultValue={defaultValue}
+          />
+        </div>
       )}
-      <button onClick={submit}>{submitName}</button>
+      </div>
+      <div className={styles.buttonContainer}>
+        <button onClick={submit}>{submitName}</button>
+      </div>
     </div>
   )
 }

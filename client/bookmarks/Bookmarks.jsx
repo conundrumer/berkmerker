@@ -4,10 +4,13 @@ import React, {PropTypes} from 'react'
 import BookmarkInput from './BookmarkInput.jsx'
 import Bookmark from './Bookmark.jsx'
 
-export const Bookmarks = ({items, add}) => {
+export const Bookmarks = ({items, add, ownProps}) => {
   return (
-    <div>
+    <div {...ownProps}>
+      <h3>Add new bookmark</h3>
       <BookmarkInput submitName='Add' onSubmit={add} />
+      <hr/>
+      <h2>Bookmarks</h2>
       {items.map((item, i) =>
         <Bookmark {...item} key={i} />
       )}
@@ -41,7 +44,8 @@ const mapStateToProps = ({ui: {bookmarks: {editing, items}, tagFilter: {tags}}})
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(ActionCreators, dispatch)
 
-const mergeProps = ({items, editing}, {add, setEditing, edit, remove, modifyTags}) => ({
+const mergeProps = ({items, editing}, {add, setEditing, edit, remove, modifyTags}, ownProps) => ({
+  ownProps,
   add,
   items: items.map(({name, url, tags}, i) => ({
     name,

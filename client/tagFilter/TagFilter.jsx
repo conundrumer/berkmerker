@@ -2,8 +2,10 @@ import React, {PropTypes} from 'react'
 
 // import styles from './TagFilter.css!'
 
-const TagFilter = ({tags, toggle}) => (
-  <div>
+const TagFilter = ({tags, toggle, ownProps}) => (
+  <div {...ownProps}>
+    <h3>Filter by tag</h3>
+    <hr/>
     {tags.map(([tag, {count, toggled}], i) =>
       <div key={tag}>
         <input type='checkbox' checked={toggled} onChange={() => toggle(tag)} />
@@ -29,7 +31,8 @@ import { connect } from 'react-redux'
 
 import ActionCreators from './actions.js'
 
-const mapStateToProps = ({ui: {tagFilter: {tags}}}) => ({
+const mapStateToProps = ({ui: {tagFilter: {tags}}}, ownProps) => ({
+  ownProps,
   tags: Array.from(tags)
 })
 

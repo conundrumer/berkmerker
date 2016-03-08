@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react'
 import styles from './Tags.css!'
 
 const Tags = ({tags, editing, onClick = () => {}}) => (
-  <div>
+  <div className={styles.container}>
     {tags.map((tag, i) =>
       <span
         key={i}
