@@ -9,7 +9,7 @@
   <body>
     <div id="container">loading...</div>
     <script>
-      SystemJS.import('bundle.js').then(function () {
+      SystemJS.import('./bundle.js').then(function () {
         SystemJS.config({production: true})
       }).catch(function () {
         console.log('Development')
